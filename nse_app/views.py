@@ -17,9 +17,17 @@ def stock_view(request):
 
 def stock_search(request):
 
-    sbin = get_history(symbol='SBIN',
-                    start=date(2022,5,1),
-                    end=date.today())
+    try:
+        symbol = request.GET.get('symbol')
+        start = request.GET.get('start').split('-')
+        end = request.GET.get('end').split('-')
+    except:
+        start = date(2022,5,1)
+        end = date().today()
+        symbol = 'SBIN'
+    sbin = get_history(symbol=symbol,
+                    start=date(int(start[0]),int(start[1]),int(start[2])),
+                    end=date(int(end[0]),int(end[1]),int(end[2])))
     d = dict(sbin)
     
     data = {'Info': {'Symbol' : 'SBIN'}, 'Time' : {}}
