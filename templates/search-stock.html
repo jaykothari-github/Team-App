@@ -1,0 +1,107 @@
+{% extends 'header.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  td{
+    color: rgb(204, 204, 204);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<form action="{% url 'stock_search' %}" method="get">
+  <div class="row">
+
+    <div class="form-outline mb-4 col-8">
+      <input type="text" class="form-control" name="stock" placeholder="Search with Stock Symbol Here...">
+    </div>
+    <div class="form-outline mb-4 col-4">
+      <button type="submit" style="background-color: rgb(53, 51, 51); border: 0px; border-radius: 20px;height: 100%; width: 100%;"><i class="fa fa-search" style="color: white;" ></i></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-outline mb-4 col-6">
+        <input type="text" class="form-control" name="stock" onfocus="(this.type = 'date')"  placeholder="Start Date..." >
+    </div>
+    <div class="form-outline mb-4 col-6">
+      <input type="text" class="form-control" name="stock" placeholder="End Date..." onfocus="(this.type = 'date')"  >
+    </div>
+  </div>
+  
+</form>
+<div>
+
+
+
+<table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Open</th>
+        <th scope="col">High</th>
+        <th scope="col">Low</th>
+        <th scope="col">Close</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for k,v in data.Time.items %}
+      <tr>
+        <th scope="row">{{k}}</th>
+        
+        <td style="background-color: {% if v.open == open_max %} green {% elif v.open == open_min %} red {% endif %};">{{v.open}}</td>
+        <td style="background-color: {% if v.high == high_max %} green {% elif v.high == high_min %} red {% endif %};">{{v.high}}</td>
+        <td style="background-color: {% if v.low == low_max %} green {% elif v.low == low_min %} red {% endif %};">{{v.low}}</td>
+        <td style="background-color: {% if v.close == close_max %} green {% elif v.close == close_min %} red {% endif %};">{{v.close}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+<table class="table table-striped table-dark">
+  <thead>
+    <tr>
+      <th scope="col" colspan="4" style="text-align: center;">Informative Stats</th>
+
+    </tr>
+    <tr>
+      <th scope="col">Type</th>
+      <th scope="col">Max Price</th>
+      <th scope="col">Min Price</th>
+      <th scope="col">Avg. Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Open</th>  
+      <td style="color: green;">{{open_max}}</td>
+      <td style="color: red;">{{open_min}}</td>
+      <td>{{open_avg}}</td>
+    </tr>
+      <tr>
+        <th scope="row">High</th>  
+        <td style="color: green;">{{high_max}}</td>
+        <td style="color: red;">{{high_min}}</td>
+        <td>{{high_avg}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Low</th>  
+        <td style="color: green;">{{low_max}}</td>
+        <td style="color: red;">{{low_min}}</td>
+        <td>{{low_avg}}</td>
+      </tr>
+      <tr>
+        <th scope="row">Close</th>  
+        <td style="color: green;">{{close_max}}</td>
+        <td style="color: red;">{{close_min}}</td>
+        <td>{{close_avg}}</td>
+      </tr>
+  </tbody>
+</table>
+
+</div>
+
+
+{% endblock %}
